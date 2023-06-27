@@ -1,8 +1,9 @@
-// Create an instance of EHRSystem
+const EHRSystem = require('../utils/PatientRecord')
 const ehrSystem = new EHRSystem('mongodb://localhost/ehrdb');
-
+const express = require('express');
+const router = express.Router();
 // Endpoint to add a patient record
-app.post('/patient', (req, res) => {
+router.post('/patient', (req, res) => {
   const record = req.body;
   ehrSystem.addPatientRecord(record)
     .then(savedRecord => {
@@ -14,7 +15,7 @@ app.post('/patient', (req, res) => {
 });
 
 // Endpoint to retrieve a patient record by ID
-app.get('/patient/:id', (req, res) => {
+router.get('/patient/:id', (req, res) => {
   const id = parseInt(req.params.id);
   ehrSystem.retrievePatientRecordById(id)
     .then(record => {
@@ -30,7 +31,7 @@ app.get('/patient/:id', (req, res) => {
 });
 
 // Endpoint to update a patient record
-app.put('/patient/:id', (req, res) => {
+router.put('/patient/:id', (req, res) => {
   const id = parseInt(req.params.id);
   const updatedInfo = req.body;
   ehrSystem.updatePatientRecord(id, updatedInfo)
@@ -46,8 +47,4 @@ app.put('/patient/:id', (req, res) => {
     });
 });
 
-// Start the server
-app.listen(3000, () => {
-  console.log('Server started on port 3000');
-});
-
+module.exports =router
